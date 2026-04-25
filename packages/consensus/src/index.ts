@@ -1,0 +1,1 @@
+export { calculateConsensus } from './calculator';
