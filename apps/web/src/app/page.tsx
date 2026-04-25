@@ -22,6 +22,12 @@ export default function Home() {
           <Link href="/session/create">
             <Button variant="outline" fullWidth>New Session</Button>
           </Link>
+          <Link href="/session/demo/vote">
+            <Button variant="outline" fullWidth>Vote Demo</Button>
+          </Link>
+          <Link href="/session/demo/victory">
+            <Button variant="outline" fullWidth>Victory Demo</Button>
+          </Link>
         </div>
       </div>
 

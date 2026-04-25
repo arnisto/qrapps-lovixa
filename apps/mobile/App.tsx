@@ -7,10 +7,12 @@ import { SignupScreen } from './src/screens/SignupScreen';
 import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { CreateSessionScreen } from './src/screens/CreateSessionScreen';
+import { VoteScreen } from './src/screens/VoteScreen';
+import { VictoryScreen } from './src/screens/VictoryScreen';
 import { theme } from './src/theme';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<'login' | 'signup' | 'reset' | 'profile' | 'create'>('login');
+  const [currentScreen, setCurrentScreen] = useState<'login' | 'signup' | 'reset' | 'profile' | 'create' | 'vote' | 'victory'>('login');
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -19,6 +21,8 @@ export default function App() {
       case 'reset': return <ResetPasswordScreen />;
       case 'profile': return <ProfileScreen />;
       case 'create': return <CreateSessionScreen />;
+      case 'vote': return <VoteScreen />;
+      case 'victory': return <VictoryScreen />;
       default: return <LoginScreen />;
     }
   };
@@ -45,6 +49,12 @@ export default function App() {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setCurrentScreen('create')} style={styles.navItem}>
             <Text style={[styles.navText, currentScreen === 'create' && styles.active]}>Create</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setCurrentScreen('vote')} style={styles.navItem}>
+            <Text style={[styles.navText, currentScreen === 'vote' && styles.active]}>Vote</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setCurrentScreen('victory')} style={styles.navItem}>
+            <Text style={[styles.navText, currentScreen === 'victory' && styles.active]}>Victory</Text>
           </TouchableOpacity>
         </SafeAreaView>
       </View>
