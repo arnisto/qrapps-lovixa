@@ -1,92 +1,103 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { addPlan } from '@/store/slices/sessionSlice';
 import { Button } from '@/components/Button/Button';
 import { Input } from '@/components/Input/Input';
-import styles from './create-session.module.css';
+import styles from './create.module.css';
 
-interface CardDraft {
-  title: string;
-  description: string;
-  image: string;
-}
+export default function CreatePlanPage() {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [activityInput, setActivityInput] = useState('');
+  const [activities, setActivities] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-export default function CreateSessionPage() {
-  const [sessionTitle, setSessionTitle] = useState('');
-  const [cards, setCards] = useState<CardDraft[]>([
-    { title: '', description: '', image: '' },
-    { title: '', description: '', image: '' },
-    { title: '', description: '', image: '' },
-  ]);
-  const [isCreating, setIsCreating] = useState(false);
-
-  const updateCard = (index: number, field: keyof CardDraft, value: string) => {
-    const newCards = [...cards];
-    newCards[index][field] = value;
-    setCards(newCards);
+  const addActivity = () => {
+    if (activityInput.trim()) {
+      setActivities([...activities, activityInput.trim()]);
+      setActivityInput('');
+    }
   };
 
-  const handleCreate = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsCreating(true);
-    // Simulate API call
-    setTimeout(() => setIsCreating(false), 2000);
+  const handleCreate = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      dispatch(addPlan({
+        id: Math.random().toString(36).substr(2, 9),
+        title,
+        description,
+        activities,
+        status: 'active'
+      }));
+      router.push('/home');
+    }, 1500);
   };
 
   return (
     <main className={styles.container}>
-      <header className={styles.header}>
-        <h1 className="gradient-text">Create Live Session</h1>
-        <p className={styles.subtitle}>Define the vibe and select 3 cards for your group to vote on.</p>
-      </header>
+      <div className={styles.topNav}>
+        <button onClick={() => router.back()} className={styles.backBtn}>
+          ← Back
+        </button>
+      </div>
 
-      <form className={styles.form} onSubmit={handleCreate}>
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>1. Session Info</h2>
-          <Input 
-            label="What are we deciding?"
-            placeholder="e.g., Saturday Night Vibe"
-            value={sessionTitle}
-            onChange={(e) => setSessionTitle(e.target.value)}
-            required
-          />
-        </section>
+      <div className={`${styles.content} animate-slide-up`}>
+        <header className={styles.header}>
+          <h1>Create New Plan</h1>
+          <p className={styles.subtitle}>Define your vision and let the group decide the rest.</p>
+        </header>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>2. Vibe Cards (Select 3)</h2>
-          <div className={styles.cardGrid}>
-            {cards.map((card, index) => (
-              <div key={index} className={styles.cardForm}>
-                <div className={styles.cardBadge}>Card {index + 1}</div>
-                <Input 
-                  placeholder="Venue or Activity Title"
-                  value={card.title}
-                  onChange={(e) => updateCard(index, 'title', e.target.value)}
-                  required
-                />
-                <textarea 
-                  className={styles.textarea}
-                  placeholder="Brief description (optional)"
-                  value={card.description}
-                  onChange={(e) => updateCard(index, 'description', e.target.value)}
-                />
-                <div className={styles.imagePlaceholder}>
-                  <span>+ Add Image</span>
+        <div className={styles.formCard}>
+          <section className={styles.section}>
+            <Input 
+              label="Plan Title"
+              placeholder="e.g., Summer Yacht Party"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <div className={styles.spacer} />
+            <Input 
+              label="Description"
+              placeholder="Give your group some context..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </section>
+
+          <section className={styles.section}>
+            <label className={styles.label}>Activities</label>
+            <div className={styles.activityInputRow}>
+              <Input 
+                placeholder="Add an activity..."
+                value={activityInput}
+                onChange={(e) => activityInput === '' ? setActivityInput(e.target.value) : setActivityInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addActivity()}
+              />
+              <Button onClick={addActivity} variant="secondary">Add</Button>
+            </div>
+
+            <div className={styles.tagCloud}>
+              {activities.map((act, i) => (
+                <div key={i} className={styles.tag}>
+                  {act}
+                  <button onClick={() => setActivities(activities.filter((_, idx) => idx !== i))}>×</button>
                 </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
 
-        <div className={styles.actions}>
-          <Button type="submit" isLoading={isCreating} fullWidth>
-            Launch Live Session
-          </Button>
-          <p className={styles.disclaimer}>
-            A shareable link will be generated instantly.
-          </p>
+          <div className={styles.footer}>
+            <Button variant="outline" onClick={() => router.back()}>Cancel</Button>
+            <Button onClick={handleCreate} isLoading={isLoading} disabled={!title}>Create Plan</Button>
+          </div>
         </div>
-      </form>
+      </div>
     </main>
   );
 }

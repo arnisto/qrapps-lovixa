@@ -1,50 +1,63 @@
+'use client';
+
+import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/Button/Button';
 import styles from './page.module.css';
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <main className={styles.main}>
-      <div className={styles.hero}>
-        <h1 className="gradient-text">Lovixa</h1>
-        <p className={styles.tagline}>Decide faster. Hang out more.</p>
-        
-        <div className={styles.ctaGrid}>
-          <Link href="/auth/login">
-            <Button fullWidth>Sign In</Button>
-          </Link>
+    <main className={styles.container}>
+      <nav className={styles.nav}>
+        <div className={styles.logoRow}>
+          <div className={styles.logo}>L</div>
+          <span>Lovixa</span>
+        </div>
+        <div className={styles.navLinks}>
+          <Link href="/auth/login">Login</Link>
           <Link href="/auth/signup">
-            <Button variant="secondary" fullWidth>Create Account</Button>
-          </Link>
-          <Link href="/profile">
-            <Button variant="outline" fullWidth>View Profile</Button>
-          </Link>
-          <Link href="/session/create">
-            <Button variant="outline" fullWidth>New Session</Button>
-          </Link>
-          <Link href="/session/demo/vote">
-            <Button variant="outline" fullWidth>Vote Demo</Button>
-          </Link>
-          <Link href="/session/demo/victory">
-            <Button variant="outline" fullWidth>Victory Demo</Button>
+            <Button size="small">Get Started</Button>
           </Link>
         </div>
-      </div>
+      </nav>
 
-      <div className={styles.features}>
-        <div className="card">
-          <h3>Ghost Vote</h3>
-          <p>No login required for friends. Just swipe and decide.</p>
+      <section className={styles.hero}>
+        <div className={styles.badge}>v1.0 is now live 🚀</div>
+        <h1 className={styles.title}>
+          Group decisions, <br />
+          <span className="gradient-text">minus the fatigue.</span>
+        </h1>
+        <p className={styles.subtitle}>
+          The coordination layer for groups. Create plans, invite friends, and reach consensus with zero friction.
+        </p>
+        
+        <div className={styles.ctaRow}>
+          <Link href="/auth/signup">
+            <Button size="large">Create Your First Plan</Button>
+          </Link>
+          <Link href="/auth/login">
+            <Button variant="outline" size="large">Sign In</Button>
+          </Link>
         </div>
-        <div className="card">
-          <h3>Real-time Sync</h3>
-          <p>See results as they happen across all devices.</p>
+      </section>
+
+      <section className={styles.preview}>
+        <div className={styles.previewCard}>
+          <div className={styles.previewHeader}>
+            <div className={styles.previewDot} />
+            <div className={styles.previewDot} />
+            <div className={styles.previewDot} />
+          </div>
+          <div className={styles.previewBody}>
+            <div className={styles.skeletonLine} style={{ width: '40%' }} />
+            <div className={styles.skeletonGrid}>
+              <div className={styles.skeletonBox} />
+              <div className={styles.skeletonBox} />
+              <div className={styles.skeletonBox} />
+            </div>
+          </div>
         </div>
-        <div className="card">
-          <h3>Consensus Engine</h3>
-          <p>Smart math to find the perfect choice for the group.</p>
-        </div>
-      </div>
+      </section>
     </main>
   );
 }

@@ -2,68 +2,71 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { login } from '@/store/slices/authSlice';
 import { Button } from '@/components/Button/Button';
 import { Input } from '@/components/Input/Input';
 import styles from './login.module.css';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleFakeLogin = () => {
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => setIsLoading(false), 2000);
+    setTimeout(() => {
+      dispatch(login({
+        id: 'fake-id',
+        name: 'John Doe',
+        email: 'john@example.com',
+        avatar: 'https://i.pravatar.cc/150?u=fake'
+      }));
+      router.push('/home');
+    }, 1000);
   };
 
   return (
     <main className={styles.container}>
-      <div className={`${styles.card} animate-fade-in`}>
+      <div className={`${styles.card} animate-slide-up`}>
         <div className={styles.header}>
-          <h1 className="gradient-text">Welcome Back</h1>
-          <p className={styles.subtitle}>Log in to Lovixa to continue coordinating with your group.</p>
+          <div className={styles.logo}>L</div>
+          <h1>Welcome back</h1>
+          <p className={styles.subtitle}>Enter your details to access your group plans.</p>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
           <Input 
-            label="Email Address"
+            label="Email"
             type="email"
-            placeholder="name@example.com"
-            required
+            placeholder="example@gmail.com"
+          />
+          <Input 
+            label="Password"
+            type="password"
+            placeholder="••••••••"
           />
           
-          <div className={styles.passwordWrapper}>
-            <Input 
-              label="Password"
-              type="password"
-              placeholder="••••••••"
-              required
-            />
-            <Link href="/auth/reset-password" className={styles.forgotPassword}>
-              Forgot password?
-            </Link>
-          </div>
+          <Link href="/auth/reset-password" className={styles.forgotPassword}>
+            Forgot password?
+          </Link>
 
-          <Button type="submit" fullWidth isLoading={isLoading}>
+          <Button fullWidth isLoading={isLoading} onClick={handleFakeLogin}>
             Sign In
           </Button>
         </form>
 
         <div className={styles.divider}>
-          <span>or continue with</span>
+          <span>OR</span>
         </div>
 
-        <div className={styles.socialGaps}>
-          <Button variant="secondary" fullWidth>
-            Google
-          </Button>
-          <Button variant="secondary" fullWidth>
-            Apple
-          </Button>
-        </div>
+        <Button variant="outline" fullWidth onClick={handleFakeLogin}>
+          <span className={styles.socialIcon}>G</span> Continue with Google
+        </Button>
 
         <p className={styles.footer}>
-          Don't have an account? <Link href="/auth/signup" className={styles.link}>Create one</Link>
+          New to Lovixa? <Link href="/auth/signup" className={styles.link}>Create account</Link>
         </p>
       </div>
     </main>

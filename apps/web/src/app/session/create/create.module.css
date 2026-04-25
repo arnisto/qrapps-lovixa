@@ -1,0 +1,112 @@
+.container {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 2rem;
+}
+
+.topNav {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.backBtn {
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.backBtn:hover {
+  color: var(--primary);
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 3rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.125rem;
+}
+
+.formCard {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.spacer {
+  height: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.activityInputRow {
+  display: flex;
+  gap: 1rem;
+}
+
+.tagCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.tag {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tag button {
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+  .formCard {
+    padding: 1.5rem;
+  }
+  
+  .activityInputRow {
+    flex-direction: column;
+  }
+}

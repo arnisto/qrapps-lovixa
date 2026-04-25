@@ -19,7 +19,7 @@ export const Input: React.FC<InputProps> = ({
   ...props
 }) => {
   return (
-    <div style={styles.container}>
+    <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={[styles.inputWrapper, error && styles.errorBorder]}>
         <TextInput 
@@ -29,24 +29,23 @@ export const Input: React.FC<InputProps> = ({
         />
       </View>
       {error && <Text style={styles.errorText}>{error}</Text>}
-    </div>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginBottom: 16,
   },
   label: {
-    color: theme.colors.textMuted,
+    color: '#1E293B',
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '600',
     marginBottom: 8,
   },
   inputWrapper: {
-    backgroundColor: theme.colors.surface,
-    borderWidth: 1,
+    backgroundColor: 'white',
+    borderWidth: 1.5,
     borderColor: theme.colors.border,
     borderRadius: theme.radius.md,
     paddingHorizontal: 16,

@@ -16,11 +16,6 @@ import { theme } from '../theme';
 export const LoginScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
@@ -31,56 +26,58 @@ export const LoginScreen = () => {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
+          <View style={styles.logoContainer}>
+            <View style={styles.logo}>
+              <Text style={styles.logoText}>L</Text>
+            </View>
+          </View>
+
           <View style={styles.header}>
-            <Text style={styles.title}>Welcome Back</Text>
+            <Text style={styles.title}>Welcome back</Text>
             <Text style={styles.subtitle}>
-              Log in to Lovixa to continue coordinating with your group.
+              Enter your details to access your group plans.
             </Text>
           </View>
 
           <View style={styles.form}>
             <Input 
-              label="Email Address"
-              placeholder="name@example.com"
+              label="Email"
+              placeholder="example@gmail.com"
               keyboardType="email-address"
               autoCapitalize="none"
             />
             
-            <View style={styles.passwordContainer}>
-              <Input 
-                label="Password"
-                placeholder="••••••••"
-                secureTextEntry
-              />
-              <TouchableOpacity style={styles.forgotPassword}>
-                <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-              </TouchableOpacity>
-            </View>
+            <View style={styles.inputGap} />
+            
+            <Input 
+              label="Password"
+              placeholder="••••••••"
+              secureTextEntry
+            />
+            
+            <TouchableOpacity style={styles.forgotPassword}>
+              <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+            </TouchableOpacity>
 
-            <Button onPress={handleLogin} isLoading={isLoading} fullWidth>
+            <Button onPress={() => setIsLoading(true)} isLoading={isLoading} fullWidth>
               Sign In
             </Button>
           </View>
 
           <View style={styles.divider}>
             <View style={styles.line} />
-            <Text style={styles.dividerText}>or continue with</Text>
+            <Text style={styles.dividerText}>OR</Text>
             <View style={styles.line} />
           </View>
 
-          <View style={styles.socialGaps}>
-            <Button variant="secondary" onPress={() => {}} fullWidth>
-              Google
-            </Button>
-            <Button variant="secondary" onPress={() => {}} fullWidth style={styles.marginTop}>
-              Apple
-            </Button>
-          </View>
+          <Button variant="outline" onPress={() => {}} fullWidth>
+            Continue with Google
+          </Button>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account? </Text>
+            <Text style={styles.footerText}>New to Lovixa? </Text>
             <TouchableOpacity>
-              <Text style={styles.link}>Create one</Text>
+              <Text style={styles.link}>Create account</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -99,16 +96,33 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 24,
-    paddingTop: 60,
+    paddingTop: 40,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  logo: {
+    width: 56,
+    height: 56,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: '800',
   },
   header: {
     alignItems: 'center',
     marginBottom: 40,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '800',
-    color: 'white',
+    color: '#0F172A',
     marginBottom: 8,
     textAlign: 'center',
   },
@@ -121,17 +135,17 @@ const styles = StyleSheet.create({
   form: {
     width: '100%',
   },
-  passwordContainer: {
-    marginBottom: 24,
+  inputGap: {
+    height: 16,
   },
   forgotPassword: {
     alignSelf: 'flex-end',
-    marginTop: -8,
+    marginVertical: 12,
   },
   forgotPasswordText: {
     color: theme.colors.primary,
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   divider: {
     flexDirection: 'row',
@@ -144,17 +158,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.border,
   },
   dividerText: {
-    color: theme.colors.textMuted,
+    color: '#CBD5E1',
     paddingHorizontal: 16,
     fontSize: 12,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-  },
-  socialGaps: {
-    width: '100%',
-  },
-  marginTop: {
-    marginTop: 12,
+    fontWeight: '700',
   },
   footer: {
     flexDirection: 'row',
@@ -169,6 +176,6 @@ const styles = StyleSheet.create({
   link: {
     color: theme.colors.primary,
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '800',
   },
 });

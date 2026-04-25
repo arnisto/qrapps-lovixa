@@ -4,35 +4,48 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background: radial-gradient(circle at top left, rgba(124, 58, 237, 0.15), transparent 40%),
-              radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.15), transparent 40%);
+  background: var(--background);
 }
 
 .card {
   width: 100%;
   max-width: 440px;
-  background: var(--surface);
-  backdrop-filter: var(--glass-blur);
+  background: white;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 2.5rem;
+  padding: 3rem;
   box-shadow: var(--shadow-lg);
 }
 
 .header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 auto 1.5rem;
+  font-family: 'Outfit', sans-serif;
 }
 
 .header h1 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   margin-bottom: 0.5rem;
+  color: #0f172a;
 }
 
 .subtitle {
   color: var(--text-muted);
   font-size: 0.9375rem;
-  line-height: 1.5;
 }
 
 .form {
@@ -41,31 +54,21 @@
   gap: 1.25rem;
 }
 
-.passwordWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
 .forgotPassword {
   align-self: flex-end;
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--primary);
-}
-
-.forgotPassword:hover {
-  text-decoration: underline;
+  margin-top: -0.5rem;
 }
 
 .divider {
   display: flex;
   align-items: center;
-  margin: 2rem 0;
-  color: var(--text-muted);
+  margin: 1.5rem 0;
+  color: #cbd5e1;
   font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-weight: 700;
 }
 
 .divider::before,
@@ -73,41 +76,35 @@
   content: "";
   flex: 1;
   height: 1px;
-  background: var(--border);
+  background: #e2e8f0;
 }
 
 .divider span {
   padding: 0 1rem;
 }
 
-.socialGaps {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 2rem;
+.socialIcon {
+  font-weight: 800;
+  margin-right: 0.5rem;
 }
 
 .footer {
   text-align: center;
+  margin-top: 2rem;
   color: var(--text-muted);
   font-size: 0.875rem;
 }
 
 .link {
   color: var(--primary);
-  font-weight: 600;
-}
-
-.link:hover {
-  text-decoration: underline;
+  font-weight: 700;
 }
 
 @media (max-width: 480px) {
   .card {
-    padding: 1.5rem;
-  }
-  
-  .socialGaps {
-    grid-template-columns: 1fr;
+    padding: 2rem 1.5rem;
+    border: none;
+    box-shadow: none;
+    background: transparent;
   }
 }
