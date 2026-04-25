@@ -19,6 +19,9 @@ export default function Home() {
           <Link href="/profile">
             <Button variant="outline" fullWidth>View Profile</Button>
           </Link>
+          <Link href="/session/create">
+            <Button variant="outline" fullWidth>New Session</Button>
+          </Link>
         </div>
       </div>
 

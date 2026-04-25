@@ -6,10 +6,11 @@ import { LoginScreen } from './src/screens/LoginScreen';
 import { SignupScreen } from './src/screens/SignupScreen';
 import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
+import { CreateSessionScreen } from './src/screens/CreateSessionScreen';
 import { theme } from './src/theme';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<'login' | 'signup' | 'reset' | 'profile'>('login');
+  const [currentScreen, setCurrentScreen] = useState<'login' | 'signup' | 'reset' | 'profile' | 'create'>('login');
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -17,6 +18,7 @@ export default function App() {
       case 'signup': return <SignupScreen />;
       case 'reset': return <ResetPasswordScreen />;
       case 'profile': return <ProfileScreen />;
+      case 'create': return <CreateSessionScreen />;
       default: return <LoginScreen />;
     }
   };
@@ -40,6 +42,9 @@ export default function App() {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setCurrentScreen('profile')} style={styles.navItem}>
             <Text style={[styles.navText, currentScreen === 'profile' && styles.active]}>Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setCurrentScreen('create')} style={styles.navItem}>
+            <Text style={[styles.navText, currentScreen === 'create' && styles.active]}>Create</Text>
           </TouchableOpacity>
         </SafeAreaView>
       </View>
