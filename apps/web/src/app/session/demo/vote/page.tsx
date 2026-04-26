@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { SwipeStack } from '@/components/SwipeStack/SwipeStack';
+import { Users } from 'lucide-react';
 import styles from './vote.module.css';
 
 const DUMMY_CARDS = [
@@ -24,7 +25,10 @@ export default function VotePage() {
   return (
     <main className={styles.container}>
       <header className={styles.header}>
-        <div className={styles.participantBadge}>4 Active Friends</div>
+        <div className={styles.participantBadge}>
+          <Users size={12} style={{ marginRight: '6px' }} />
+          4 Active Friends
+        </div>
         <h1 className="gradient-text">Make Your Choice</h1>
         <p className={styles.subtitle}>Swipe right if you're in, left if you're not.</p>
       </header>

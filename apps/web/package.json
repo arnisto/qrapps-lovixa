@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
+    "canvas-confetti": "^1.9.4",
     "framer-motion": "^12.38.0",
+    "lucide-react": "^1.11.0",
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

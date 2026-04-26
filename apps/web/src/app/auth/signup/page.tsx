@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { Sparkles, UserPlus, Mail, Apple } from 'lucide-react';
 import { Button } from '@/components/Button/Button';
 import { Input } from '@/components/Input/Input';
 import styles from './signup.module.css';
@@ -20,6 +21,9 @@ export default function SignupPage() {
     <main className={styles.container}>
       <div className={`${styles.card} animate-fade-in`}>
         <div className={styles.header}>
+          <div className={styles.logo}>
+            <Sparkles size={24} color="white" />
+          </div>
           <h1 className="gradient-text">Create Account</h1>
           <p className={styles.subtitle}>Join Lovixa and start making group decisions without the fatigue.</p>
         </div>
@@ -44,7 +48,7 @@ export default function SignupPage() {
             required
           />
 
-          <Button type="submit" fullWidth isLoading={isLoading}>
+          <Button type="submit" fullWidth isLoading={isLoading} rightIcon={<UserPlus size={18} />}>
             Get Started
           </Button>
         </form>
@@ -58,10 +62,10 @@ export default function SignupPage() {
         </div>
 
         <div className={styles.socialGaps}>
-          <Button variant="secondary" fullWidth>
+          <Button variant="secondary" fullWidth icon={<Mail size={18} />}>
             Google
           </Button>
-          <Button variant="secondary" fullWidth>
+          <Button variant="secondary" fullWidth icon={<Apple size={18} />}>
             Apple
           </Button>
         </div>

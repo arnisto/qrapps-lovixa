@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { login } from '@/store/slices/authSlice';
+import { Sparkles, LogIn, Mail } from 'lucide-react';
 import { Button } from '@/components/Button/Button';
 import { Input } from '@/components/Input/Input';
 import styles from './login.module.css';
@@ -31,8 +32,10 @@ export default function LoginPage() {
     <main className={styles.container}>
       <div className={`${styles.card} animate-slide-up`}>
         <div className={styles.header}>
-          <div className={styles.logo}>L</div>
-          <h1>Welcome back</h1>
+          <div className={styles.logo}>
+            <Sparkles size={24} color="white" />
+          </div>
+          <h1 className="gradient-text">Welcome back</h1>
           <p className={styles.subtitle}>Enter your details to access your group plans.</p>
         </div>
 
@@ -52,7 +55,7 @@ export default function LoginPage() {
             Forgot password?
           </Link>
 
-          <Button fullWidth isLoading={isLoading} onClick={handleFakeLogin}>
+          <Button fullWidth isLoading={isLoading} onClick={handleFakeLogin} rightIcon={<LogIn size={18} />}>
             Sign In
           </Button>
         </form>
@@ -61,8 +64,8 @@ export default function LoginPage() {
           <span>OR</span>
         </div>
 
-        <Button variant="outline" fullWidth onClick={handleFakeLogin}>
-          <span className={styles.socialIcon}>G</span> Continue with Google
+        <Button variant="outline" fullWidth onClick={handleFakeLogin} icon={<Mail size={18} />}>
+          Continue with Google
         </Button>
 
         <p className={styles.footer}>

@@ -2,6 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { 
+  Sparkles, 
+  Layers, 
+  Camera, 
+  Trash2, 
+  Save, 
+  RotateCcw, 
+  Key, 
+  ShieldCheck, 
+  UserX 
+} from 'lucide-react';
 import { Button } from '@/components/Button/Button';
 import { Input } from '@/components/Input/Input';
 import styles from './profile.module.css';
@@ -11,10 +22,11 @@ export default function ProfilePage() {
     <main className={styles.container}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
+          <Sparkles size={20} className={styles.logoIcon} />
           <span className="gradient-text">Lovixa</span>
         </Link>
         <div className={styles.navActions}>
-          <Button variant="ghost">My Sessions</Button>
+          <Button variant="ghost" icon={<Layers size={18} />}>My Sessions</Button>
           <div className={styles.avatarMini}>JD</div>
         </div>
       </nav>
@@ -29,8 +41,8 @@ export default function ProfilePage() {
           <div className={styles.profileHero}>
             <div className={styles.avatarLarge}>JD</div>
             <div className={styles.heroActions}>
-              <Button size="small">Change Avatar</Button>
-              <Button variant="ghost" size="small">Remove</Button>
+              <Button size="small" icon={<Camera size={14} />}>Change Avatar</Button>
+              <Button variant="ghost" size="small" icon={<Trash2 size={14} />}>Remove</Button>
             </div>
           </div>
 
@@ -54,8 +66,8 @@ export default function ProfilePage() {
           </div>
 
           <div className={styles.actions}>
-            <Button>Save Changes</Button>
-            <Button variant="outline">Discard</Button>
+            <Button icon={<Save size={18} />}>Save Changes</Button>
+            <Button variant="outline" icon={<RotateCcw size={18} />}>Discard</Button>
           </div>
         </section>
 
@@ -66,21 +78,21 @@ export default function ProfilePage() {
               <p className={styles.securityLabel}>Password</p>
               <p className={styles.securityValue}>Last changed 3 months ago</p>
             </div>
-            <Button variant="secondary">Change Password</Button>
+            <Button variant="secondary" icon={<Key size={18} />}>Change Password</Button>
           </div>
           <div className={styles.securityRow}>
             <div>
               <p className={styles.securityLabel}>Two-Factor Authentication</p>
               <p className={styles.securityValue}>Disabled</p>
             </div>
-            <Button variant="secondary">Enable 2FA</Button>
+            <Button variant="secondary" icon={<ShieldCheck size={18} />}>Enable 2FA</Button>
           </div>
         </section>
 
         <footer className={styles.dangerZone}>
           <h2 className={styles.dangerTitle}>Danger Zone</h2>
           <p className={styles.dangerText}>Once you delete your account, there is no going back. Please be certain.</p>
-          <Button variant="outline" className={styles.deleteButton}>Delete Account</Button>
+          <Button variant="outline" className={styles.deleteButton} icon={<UserX size={18} />}>Delete Account</Button>
         </footer>
       </div>
     </main>

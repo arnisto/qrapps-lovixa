@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { X, Heart } from 'lucide-react';
 import styles from './SwipeStack.module.css';
 
 interface Card {
@@ -77,13 +78,13 @@ export const SwipeStack: React.FC<SwipeStackProps> = ({ cards, onSwipe, onAllSwi
           className={`${styles.btn} ${styles.btnNo}`} 
           onClick={() => handleSwipe('left')}
         >
-          ✕
+          <X size={24} />
         </button>
         <button 
           className={`${styles.btn} ${styles.btnYes}`} 
           onClick={() => handleSwipe('right')}
         >
-          ❤
+          <Heart size={24} fill="currentColor" />
         </button>
       </div>
     </div>

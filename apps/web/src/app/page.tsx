@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { Rocket, Sparkles, ArrowRight, Plus, LogIn } from 'lucide-react';
 import { Button } from '@/components/Button/Button';
 import styles from './page.module.css';
 
@@ -10,19 +11,24 @@ export default function LandingPage() {
     <main className={styles.container}>
       <nav className={styles.nav}>
         <div className={styles.logoRow}>
-          <div className={styles.logo}>L</div>
+          <div className={styles.logo}>
+            <Sparkles size={20} color="white" />
+          </div>
           <span>Lovixa</span>
         </div>
         <div className={styles.navLinks}>
           <Link href="/auth/login">Login</Link>
           <Link href="/auth/signup">
-            <Button size="small">Get Started</Button>
+            <Button size="small" rightIcon={<ArrowRight size={14} />}>Get Started</Button>
           </Link>
         </div>
       </nav>
 
       <section className={styles.hero}>
-        <div className={styles.badge}>v1.0 is now live 🚀</div>
+        <div className={styles.badge}>
+          <Rocket size={14} style={{ marginRight: '6px' }} />
+          v1.0 is now live
+        </div>
         <h1 className={styles.title}>
           Group decisions, <br />
           <span className="gradient-text">minus the fatigue.</span>
@@ -33,10 +39,10 @@ export default function LandingPage() {
         
         <div className={styles.ctaRow}>
           <Link href="/auth/signup">
-            <Button size="large">Create Your First Plan</Button>
+            <Button size="large" icon={<Plus size={20} />}>Create Your First Plan</Button>
           </Link>
           <Link href="/auth/login">
-            <Button variant="outline" size="large">Sign In</Button>
+            <Button variant="outline" size="large" icon={<LogIn size={20} />}>Sign In</Button>
           </Link>
         </div>
       </section>

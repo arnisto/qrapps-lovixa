@@ -20,6 +20,16 @@
   font-family: 'Outfit', sans-serif;
   font-size: 1.5rem;
   font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoIcon {
+  background: var(--primary);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  color: white;
 }
 
 .navActions {

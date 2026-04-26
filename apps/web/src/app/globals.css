@@ -95,6 +95,19 @@ input, textarea {
   box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
 }
 
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-light);
+  transition: all 0.2s;
+}
+
 /* Animations */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }

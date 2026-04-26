@@ -14,6 +14,8 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  z-index: 100;
+  transition: transform 0.3s ease;
 }
 
 .sidebarHeader {
@@ -25,6 +27,34 @@
   font-weight: 800;
   font-size: 1.25rem;
   color: var(--primary);
+  justify-content: space-between;
+}
+
+.closeSidebar {
+  display: none;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.overlay.show {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .logo {
@@ -112,16 +142,89 @@
   padding: 3rem 4rem;
 }
 
-.header {
+.headerInfo {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 3rem;
+  gap: 1.5rem;
+}
+
+.menuToggle {
+  display: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.menuToggle:hover {
+  color: var(--primary);
 }
 
 .header h1 {
   font-size: 2.25rem;
   margin-bottom: 0.5rem;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.actionBtn {
+  background: transparent;
+  color: var(--text-muted);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: var(--error);
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.avatarLink {
+  margin: 0 0.5rem;
+}
+
+.headerAvatar {
+  width: 44px;
+  height: 44px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+
+.headerAvatar:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
 }
 
 .subtitle {
@@ -191,6 +294,23 @@
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 1rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.socialStats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.socialStats span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .dot {
@@ -251,9 +371,73 @@
   border: 2px solid white;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 1024px) {
-  .sidebar { width: 80px; padding: 1.5rem 1rem; }
-  .sidebarHeader span, .menuItem span:last-child, .userInfo { display: none; }
-  .planGrid { grid-template-columns: 1fr; }
-  .content { padding: 2rem; }
+  .sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .closeSidebar, .menuToggle {
+    display: flex;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .content {
+    padding: 2rem 1.5rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 640px) {
+  .planGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header h1 {
+    font-size: 1.75rem;
+  }
+
+  .headerActions {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .statCard {
+    padding: 1.25rem;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+  }
 }

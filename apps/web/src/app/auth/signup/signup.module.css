@@ -24,6 +24,18 @@
   margin-bottom: 2rem;
 }
 
+.logo {
+  width: 48px;
+  height: 48px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
 .header h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
