@@ -17,15 +17,29 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '@/store/store';
+import { fetchPlans } from '@/store/slices/sessionSlice';
 import { Button } from '@/components/Button/Button';
 import styles from './home.module.css';
 
 export default function HomePage() {
+  const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { plans } = useSelector((state: RootState) => state.session);
+  const { plans, isLoading, error } = useSelector((state: RootState) => state.session);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    dispatch(fetchPlans());
+  }, [dispatch]);
+
+  const handleToggleLike = (planId: string, isCurrentlyLiked: boolean) => {
+    dispatch(toggleLike({ targetId: planId, targetType: 'plan', isCurrentlyLiked }));
+  };
+
+  const handleRecordView = (planId: string) => {
+    dispatch(incrementView({ targetId: planId, targetTable: 'plans' }));
+  };
 
   return (
     <main className={styles.container}>
@@ -124,36 +138,77 @@ export default function HomePage() {
           </div>
 
           <div className={styles.planGrid}>
-            {plans.map((plan) => (
+            {isLoading && [1,2,3].map(i => (
+              <div key={i} className={`${styles.planCard} ${styles.skeleton}`} style={{ height: '200px' }} />
+            ))}
+
+            {!isLoading && plans.length === 0 && (
+              <div className={styles.emptyState}>
+                <Sparkles size={48} color="var(--border)" />
+                <h3>No sessions yet</h3>
+                <p>Create your first plan to start collaborating with friends.</p>
+                <Link href="/session/create">
+                  <Button variant="secondary" icon={<Plus size={18} />}>Create Plan</Button>
+                </Link>
+              </div>
+            )}
+
+            {!isLoading && plans.map((plan) => (
               <div key={plan.id} className={styles.planCard}>
                 <div className={styles.planStatus}>
                   <span className={`${styles.dot} ${plan.status === 'active' ? styles.active : styles.completed}`} />
                   {plan.status === 'active' ? 'Live Now' : 'Finished'}
                   <div className={styles.socialStats}>
-                    <span><Eye size={12} /> {plan.views}</span>
-                    <span><Heart size={12} /> {plan.likes}</span>
+                    <span><Eye size={12} /> {plan.views || 0}</span>
+                    <button 
+                      className={`${styles.miniLikeBtn} ${plan.is_liked ? styles.liked : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleToggleLike(plan.id, !!plan.is_liked);
+                      }}
+                    >
+                      <Heart 
+                        size={12} 
+                        fill={plan.is_liked ? 'var(--error)' : 'none'} 
+                        color={plan.is_liked ? 'var(--error)' : 'currentColor'} 
+                      /> 
+                      {plan.likes || 0}
+                    </button>
                   </div>
                 </div>
                 <h3 className={styles.planTitle}>{plan.title}</h3>
                 <p className={styles.planDesc}>{plan.description}</p>
                 
                 <div className={styles.activityList}>
-                  {plan.activities.map((act, i) => (
+                  {plan.activities?.slice(0, 3).map((act, i) => (
                     <span key={i} className={styles.activityTag}>{act.title}</span>
                   ))}
+                  {(plan.activities?.length || 0) > 3 && (
+                    <span className={styles.moreCount}>+{(plan.activities?.length || 0) - 3} more</span>
+                  )}
                 </div>
-
-                  <div className={styles.planFooter}>
-                    <div className={styles.groupAvatars}>
-                      <div className={styles.miniAvatar}>+4</div>
-                    </div>
-                    <Link href={`/plan/${plan.id}`}>
-                      <Button variant="ghost" size="small" rightIcon={<ChevronRight size={14} />}>View Detail</Button>
-                    </Link>
+ 
+                <div className={styles.planFooter}>
+                  <div className={styles.groupAvatars}>
+                    {plan.members?.slice(0, 3).map((member, i) => (
+                      <div key={i} className={styles.miniAvatar} title={member.name}>
+                        {member.name?.[0] || 'U'}
+                      </div>
+                    ))}
+                    {(plan.members?.length || 0) > 3 && (
+                      <div className={styles.miniAvatar}>+{(plan.members?.length || 0) - 3}</div>
+                    )}
+                    {(plan.members?.length || 0) === 0 && (
+                      <div className={styles.noMembers}>No members yet</div>
+                    )}
                   </div>
+                  <Link href={`/plan/${plan.id}`} onClick={() => handleRecordView(plan.id)}>
+                    <Button variant="ghost" size="small" rightIcon={<ChevronRight size={14} />}>View Detail</Button>
+                  </Link>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
           </section>
       </div>
     </main>

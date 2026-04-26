@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 };
 
 import { StoreProvider } from '@/store/StoreProvider';
+import { AuthProvider } from '@/components/AuthProvider/AuthProvider';
 
 export default function RootLayout({
   children,
@@ -17,7 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <StoreProvider>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </StoreProvider>
       </body>
     </html>

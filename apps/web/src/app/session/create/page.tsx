@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { addPlan } from '@/store/slices/sessionSlice';
+import { createPlan, createActivity } from '@/store/slices/sessionSlice';
+import { AppDispatch } from '@/store/store';
 import { ArrowLeft, Plus, X, Check } from 'lucide-react';
 import { Button } from '@/components/Button/Button';
 import { Input } from '@/components/Input/Input';
@@ -13,13 +14,14 @@ export default function CreatePlanPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [category, setCategory] = useState<'Birthday' | 'Couples Date' | 'Business' | 'Friend Gathering' | 'Other'>('Friend Gathering');
+  const [category, setCategory] = useState('Friend Gathering');
   const [activityInput, setActivityInput] = useState('');
   const [activities, setActivities] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const addActivity = () => {
     if (activityInput.trim()) {
@@ -28,27 +30,46 @@ export default function CreatePlanPage() {
     }
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    if (!title) return;
     setIsLoading(true);
-    setTimeout(() => {
-      dispatch(addPlan({
-        id: Math.random().toString(36).substr(2, 9),
+    setError(null);
+    
+    try {
+      console.log('Creating plan...');
+      // 1. Create Plan
+      const planResult = await dispatch(createPlan({
         title,
         description,
         location,
         category,
-        status: 'active',
-        members: [
-          { id: 'me', name: 'John Doe (You)', status: 'accepted' }
-        ],
-        activities: activities.map((a, i) => ({
-          id: `a-${i}`,
-          title: a,
-          votes: 0
-        }))
-      }));
+        status: 'active'
+      })).unwrap();
+
+      console.log('Plan created:', planResult.id);
+
+      // 2. Create Activities sequentially
+      if (activities.length > 0) {
+        for (const actTitle of activities) {
+          await dispatch(createActivity({
+            planId: planResult.id,
+            activityData: {
+              title: actTitle,
+              votes: 0,
+              likes: 0,
+              views: 0
+            }
+          })).unwrap();
+        }
+      }
+
       router.push('/home');
-    }, 1500);
+    } catch (err: any) {
+      console.error('Submission failed:', err);
+      setError(typeof err === 'string' ? err : err.message || 'Failed to create plan. Make sure database tables are created.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -67,6 +88,8 @@ export default function CreatePlanPage() {
         </header>
 
         <div className={styles.formCard}>
+          {error && <div className={styles.errorMessage}>{error}</div>}
+          
           <section className={styles.section}>
             <Input 
               label="Plan Title"

@@ -47,6 +47,23 @@
   line-height: 1.5;
 }
 
+.errorMessage {
+  background: #fef2f2;
+  color: var(--error);
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.1);
+  text-align: center;
+}
+
+.backToLogin {
+  display: block;
+  margin-top: 2rem;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -105,12 +122,56 @@
   text-decoration: underline;
 }
 
+.passwordRequirements {
+  background: var(--background);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-top: -0.5rem;
+  border: 1px solid var(--border);
+}
+
+.reqTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.reqGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.reqGrid span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.2s;
+}
+
+.met {
+  color: #10b981;
+}
+
+.unmet {
+  color: #94a3b8;
+}
+
 @media (max-width: 480px) {
   .card {
     padding: 1.5rem;
   }
   
   .socialGaps {
+    grid-template-columns: 1fr;
+  }
+
+  .reqGrid {
     grid-template-columns: 1fr;
   }
 }

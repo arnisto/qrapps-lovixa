@@ -18,6 +18,9 @@ import { Button } from '@/components/Button/Button';
 import { Input } from '@/components/Input/Input';
 import styles from './create-activity.module.css';
 
+import { createActivity } from '@/store/slices/sessionSlice';
+import { AppDispatch } from '@/store/store';
+
 export default function CreateActivityPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: planId } = use(params);
   const [title, setTitle] = useState('');
@@ -27,26 +30,39 @@ export default function CreateActivityPage({ params }: { params: Promise<{ id: s
   const [membersCount, setMembersCount] = useState('');
   const [instructions, setInstructions] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    if (!title) return;
     setIsLoading(true);
-    // In a real app, we'd dispatch an action to add activity to a specific plan
-    // For now, we'll simulate the success and go back
-    setTimeout(() => {
-      console.log('Activity Created:', {
-        title,
-        description,
-        location,
-        price,
-        membersCount,
-        instructions,
-        planId
-      });
+    setError(null);
+
+    try {
+      await dispatch(createActivity({
+        planId,
+        activityData: {
+          title,
+          description,
+          location,
+          price,
+          instructions,
+          max_members: parseInt(membersCount) || undefined,
+          votes: 0,
+          likes: 0,
+          views: 0
+        }
+      })).unwrap();
+
       router.push(`/plan/${planId}`);
-    }, 1500);
+    } catch (err: any) {
+      console.error('Activity creation failed:', err);
+      setError(err.message || 'Failed to suggest activity. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -68,6 +84,8 @@ export default function CreateActivityPage({ params }: { params: Promise<{ id: s
         </header>
 
         <div className={styles.formCard}>
+          {error && <div className={styles.errorMessage}>{error}</div>}
+          
           <section className={styles.section}>
             <Input 
               label="Activity Title"

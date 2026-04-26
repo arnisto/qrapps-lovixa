@@ -102,11 +102,46 @@
   gap: 0.5rem;
 }
 
-.metaStats {
-  margin-left: auto;
+.navActions {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  margin-left: auto;
+}
+
+.socialStats {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.statBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f1f5f9;
+  border: none;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.statBtn:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.liked {
+  background: #fef2f2;
+  color: var(--error);
+}
+
+.liked:hover {
+  background: #fee2e2;
 }
 
 .metaStats span {
@@ -127,6 +162,25 @@
   gap: 0.25rem;
   font-size: 0.8125rem;
   color: var(--text-muted);
+}
+
+.miniLikeBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: transparent;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.miniLikeBtn:hover {
+  background: #f1f5f9;
+  color: var(--error);
 }
 
 .section {

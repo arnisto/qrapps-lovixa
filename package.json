@@ -8,6 +8,7 @@
   "scripts": {
     "dev:web": "turbo run dev --filter=@lovixa/web",
     "dev:mobile": "turbo run dev --filter=@lovixa/mobile",
+    "dev:admin": "turbo run dev --filter=admin",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "type-check": "turbo run type-check"

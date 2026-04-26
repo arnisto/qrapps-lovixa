@@ -1,8 +1,11 @@
 'use client';
 
-import React, { use } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
+import React, { use, useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { RootState, AppDispatch } from '@/store/store';
+import { voteForActivity, incrementView, toggleLike } from '@/store/slices/sessionSlice';
 import { 
   MapPin, 
   Users, 
@@ -19,14 +22,49 @@ import {
   Eye
 } from 'lucide-react';
 import { Button } from '@/components/Button/Button';
-import Link from 'next/link';
 import styles from './plan.module.css';
 
 export default function PlanDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const { plans } = useSelector((state: RootState) => state.session);
   const plan = plans.find(p => p.id === id);
-  const [sortBy, setSortBy] = React.useState<'votes' | 'newest'>('votes');
+  const [sortBy, setSortBy] = useState<'votes' | 'newest'>('votes');
+  const viewRecorded = useRef(false);
+
+  useEffect(() => {
+    if (plan && !viewRecorded.current) {
+      dispatch(incrementView({ targetId: plan.id, targetTable: 'plans' }));
+      viewRecorded.current = true;
+    }
+  }, [plan, dispatch]);
+
+  const handleVote = (activityId: string, currentVotes: number) => {
+    dispatch(voteForActivity({ activityId, currentVotes }));
+  };
+
+  const handleToggleLike = () => {
+    if (plan) {
+      dispatch(toggleLike({ 
+        targetId: plan.id, 
+        targetType: 'plan', 
+        isCurrentlyLiked: !!plan.is_liked 
+      }));
+    }
+  };
+
+  const handleToggleLikeActivity = (activityId: string, isCurrentlyLiked: boolean) => {
+    dispatch(toggleLike({ 
+      targetId: activityId, 
+      targetType: 'activity', 
+      isCurrentlyLiked 
+    }));
+  };
+
+  const handleRecordViewActivity = (activityId: string) => {
+    dispatch(incrementView({ targetId: activityId, targetTable: 'activities' }));
+  };
 
   if (!plan) {
     return (
@@ -93,9 +131,18 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
                 <Calendar size={18} />
                 <span>Today, 8:00 PM</span>
               </div>
-              <div className={styles.metaStats}>
-                <span><Eye size={16} /> {plan.views}</span>
-                <span><Heart size={16} /> {plan.likes}</span>
+              <div className={styles.navActions}>
+                <div className={styles.socialStats}>
+                  <span><Eye size={18} /> {plan.views || 0} Views</span>
+                  <button 
+                    className={`${styles.statBtn} ${plan.is_liked ? styles.liked : ''}`}
+                    onClick={handleToggleLike}
+                  >
+                    <Heart size={18} fill={plan.is_liked ? 'var(--error)' : 'none'} color={plan.is_liked ? 'var(--error)' : 'currentColor'} /> 
+                    {plan.likes || 0} Likes
+                  </button>
+                </div>
+                <Button variant="secondary" size="small" icon={<Share2 size={18} />}>Share</Button>
               </div>
             </div>
           </header>
@@ -121,22 +168,45 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
               </div>
             </div>
             <div className={styles.activityList}>
-              {[...plan.activities]
+              {plan.activities && [...plan.activities]
                 .sort((a, b) => {
-                  if (sortBy === 'votes') return b.votes - a.votes;
-                  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                  if (sortBy === 'votes') return (b.votes || 0) - (a.votes || 0);
+                  return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
                 })
                 .map((activity) => (
                   <div key={activity.id} className={styles.activityCard}>
-                    <Link href={`/activity/${activity.id}`} className={styles.activityInfo}>
-                      <h3>{activity.title}</h3>
-                      <div className={styles.activityStats}>
-                        <span><Heart size={12} fill="var(--error)" color="var(--error)" /> {activity.votes}</span>
-                        <span><Eye size={12} /> {activity.views}</span>
-                        <span><Heart size={12} /> {activity.likes}</span>
-                      </div>
-                    </Link>
-                    <Button variant="outline" size="small" icon={<Heart size={16} />}>
+                      <Link 
+                        href={`/activity/${activity.id}`} 
+                        className={styles.activityInfo}
+                        onClick={() => handleRecordViewActivity(activity.id)}
+                      >
+                        <h3>{activity.title}</h3>
+                        <div className={styles.activityStats}>
+                          <span title="Votes"><CheckCircle2 size={12} color="var(--primary)" /> {activity.votes || 0}</span>
+                          <span title="Views"><Eye size={12} /> {activity.views || 0}</span>
+                          <button 
+                            className={`${styles.miniLikeBtn} ${activity.is_liked ? styles.liked : ''}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleToggleLikeActivity(activity.id, !!activity.is_liked);
+                            }}
+                          >
+                            <Heart 
+                              size={12} 
+                              fill={activity.is_liked ? 'var(--error)' : 'none'} 
+                              color={activity.is_liked ? 'var(--error)' : 'currentColor'} 
+                            /> 
+                            {activity.likes || 0}
+                          </button>
+                        </div>
+                      </Link>
+                    <Button 
+                      variant="outline" 
+                      size="small" 
+                      icon={<Heart size={16} />}
+                      onClick={() => handleVote(activity.id, activity.votes || 0)}
+                    >
                       Vote
                     </Button>
                   </div>
@@ -156,17 +226,17 @@ export default function PlanDetailPage({ params }: { params: Promise<{ id: strin
               <span className={styles.badge}>{plan.members.length}</span>
             </div>
             <div className={styles.memberList}>
-              {plan.members.map((member) => (
+              {plan.members?.map((member: any) => (
                 <div key={member.id} className={styles.memberItem}>
                   <div className={styles.memberAvatar}>
-                    {member.avatar ? <img src={member.avatar} alt={member.name} /> : member.name[0]}
+                    {member.user?.avatar_url ? <img src={member.user.avatar_url} alt={member.user.full_name} /> : (member.user?.full_name?.[0] || 'U')}
                   </div>
                   <div className={styles.memberInfo}>
-                    <p className={styles.memberName}>{member.name}</p>
+                    <p className={styles.memberName}>{member.user?.full_name || 'Anonymous'}</p>
                     <div className={styles.memberStatus}>
                       {getStatusIcon(member.status)}
                       <span className={styles[member.status]}>
-                        {member.status.replace('_', ' ')}
+                        {member.status?.replace('_', ' ')}
                       </span>
                     </div>
                   </div>
